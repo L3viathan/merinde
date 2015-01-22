@@ -1,4 +1,5 @@
 config = {
-        "output": "html5"
-        }
+    "output": "html5",
+    "template": "default"
+}
 
