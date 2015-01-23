@@ -6,11 +6,16 @@ Python CMS compiling from Markdown to static HTML
 import markdown
 import glob
 import sys
+import os
+import re
 
 from config import config
 
 post_template = "templates/" + config["template"] + "/post.html"
 index_template = "templates/" + config["template"] + "/index.html"
+
+mtime_regex = re.compile("<meta name=\"mtime\" content=\"(\d+)\">")
+ctime_regex = re.compile("<meta name=\"ctime\" content=\"(\d+)\">")
 
 def htmlFromFile(filename):
     '''Reads file and converts markdown to HTML'''
@@ -25,7 +30,15 @@ compile_agenda = []
 for filename in glob.glob("posts/*.md"):
     # read last changed time and compare to some time saved somewhere else (?)
     # if changed (or new), add to compile_agenda
-    compile_agenda.append(filename)
+    if not os.path.isfile(filename[:-3] + ".html"): #we have never compiled it
+        compile_agenda.append(filename)
+        continue
+    mtime = os.path.getmtime(filename)
+    html = open(filename[:-3] + ".html").read()
+    matches = mtime_regex.findall(html)
+    if len(matches) != 1 or int(matches[0]) < mtime: #not found or modified
+        compile_agenda.append(filename)
+
 
 if not compile_agenda: #empty agenda, nothing to do
     print("Nothing to do, exiting")
