@@ -22,7 +22,14 @@ def htmlFromFile(filename):
     file_handle = open(filename)
     return markdown.markdown(file_handle.read()) #, output_format = config["output_format"])
 
-
+def getCtime(filename):
+    filename = filename.replace(".md", ".html")
+    file_con = open(filename).read()
+    timestamps = ctime_regex.findall(file_con)
+    if len(timestamps) == 1:
+        return int(timestamps[0])
+    else:
+        raise RuntimeError("fir-ar, unexpected number of ctime tags in input file")
 # Things that should happen in here:
 
 # 1. Get list of files that have changed / been created
@@ -53,11 +60,15 @@ for filename in compile_agenda:
     post_html = post_html_template
     post_html = post_html.replace("%content",html)
     post_html = post_html.replace("%site_name",config["site_name"])
-    post_html = post_html.replace("%title",filename[:-3])
+    post_html = post_html.replace("%title",filenamej[:-3])
     # then write to file
     open(filename[:-3] + ".html","w").write(post_html) #TODO tidy up
 
 # 3. Recompile index files. Get order by creation time of md files
 # get all posts, in order
+posts = list(glob.glob("posts/*.md"))
+posts_and_ctimes = sorted([(post,getCtime(post)) for post in posts], key = lambda x: x[1], reversed=True)
+
 # remove index file(s)
+
 # load index template, fill with contents
