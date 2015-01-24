@@ -1,0 +1,36 @@
+body {
+    font-family: 'PT Sans Narrow', Verdana, sans-serif;
+    background-color: #e9f3f8;
+    color: #040d13;
+    text-align: center;
+}
+
+#wrapper {
+    margin: auto;
+    min-width: 320px;
+    max-width: 920px;
+}
+
+h1 {
+    font-family: 'Amatic SC', cursive;
+    font-size: 36pt;
+    margin-bottom: 20px;
+}
+.rating-stars-full {
+    color: gold;
+}
+.rating-label {
+    width: 80px;
+    float: left;
+}
+
+.rating {
+    margin: auto;
+    width: 200px;
+    text-align: right;
+}
+
+img.sqimg {
+    width: 300px;
+    margin-bottom: 10px;
+}
