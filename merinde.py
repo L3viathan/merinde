@@ -17,6 +17,7 @@ index_template = "templates/" + config["template"] + "/index.html"
 
 mtime_regex = re.compile("<meta name=\"mtime\" content=\"(\d+)\">")
 ctime_regex = re.compile("<meta name=\"ctime\" content=\"(\d+)\">")
+index_regex = re.compile("%begin(.*)%end", re.MULTILINE + re.DOTALL)
 
 def htmlFromFile(filename):
     '''Reads file and converts markdown to HTML'''
@@ -31,6 +32,16 @@ def getCtime(filename):
         return int(timestamps[0])
     else:
         raise RuntimeError("fir-ar, unexpected number of ctime tags in input file")
+
+def chunks(l, n):
+    """ Yield successive n-sized chunks from l.
+        adapted from: http://stackoverflow.com/a/312464/1016216
+    """
+    if n == 0:
+        n = 99999
+    for i in range(0, len(l), n):
+        yield l[i:i+n]
+
 # Things that should happen in here:
 
 # 1. Get list of files that have changed / been created
@@ -50,7 +61,7 @@ for filename in glob.glob("posts/*.md"):
 
 if not compile_agenda: #empty agenda, nothing to do
     print("Nothing to do, exiting")
-    sys.exit(0)
+    # sys.exit(0)
 
 post_html_template = open(post_template).read()
 
@@ -79,7 +90,28 @@ for filename in compile_agenda:
 # get all posts, in order
 posts = list(glob.glob("posts/*.md"))
 posts_and_ctimes = sorted([(post,getCtime(post)) for post in posts], key = lambda x: x[1], reverse=True)
-
+print(posts_and_ctimes)
 # remove index file(s)
-
+for f in glob.glob("index*.html"):
+    os.remove(f)
 # load index template, fill with contents
+index_html_template = open(index_template).read()
+
+for (index,chunk) in enumerate(chunks(posts_and_ctimes,config["pagination"])):
+    html = index_html_template
+    html = html.replace("%site_name", config["site_name"])
+    loop_html_template = index_regex.findall(html)[0] # todo: make safe
+    inner_html = ""
+    for (post,c) in chunk:
+        content = htmlFromFile(post)
+        loop_html = loop_html_template
+        loop_html = loop_html.replace("%link","/" + post)
+        loop_html = loop_html.replace("%content", content)
+        loop_html = loop_html.replace("%title", "some title")
+        inner_html += loop_html
+    html = index_regex.sub(inner_html, html)
+    print("Index",index)
+    i = "" if index == 0 else "-" + str(index)
+    with open("index"+i+".html", "w") as fw:
+        fw.write(html)
+
