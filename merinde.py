@@ -9,6 +9,7 @@ import sys
 import os
 import re
 import time
+import math
 
 from config import config
 
@@ -18,11 +19,13 @@ index_template = "templates/" + config["template"] + "/index.html"
 mtime_regex = re.compile("<meta name=\"mtime\" content=\"(\d+)\">")
 ctime_regex = re.compile("<meta name=\"ctime\" content=\"(\d+)\">")
 index_regex = re.compile("%begin(.*)%end", re.MULTILINE + re.DOTALL)
+title_regex = re.compile("^# ?(.*)$", re.MULTILINE)
 
 def htmlFromFile(filename):
     '''Reads file and converts markdown to HTML'''
     file_handle = open(filename)
-    return markdown.markdown(file_handle.read()) #, output_format = config["output_format"])
+    md = file_handle.read()
+    return (markdown.markdown(md),md) #, output_format = config["output_format"])
 
 def getCtime(filename):
     filename = filename.replace(".md", ".html")
@@ -41,6 +44,22 @@ def chunks(l, n):
         n = 99999
     for i in range(0, len(l), n):
         yield l[i:i+n]
+
+def makePrevNext(index,num):
+    s = ""
+    if index != 0:
+        s += "<a class='previous-page' href='" + "/index" + ("" if index == 1 else "-"+str(index)) + ".html'>Previous</a>"
+    if index != num-1:
+        s += "<a class='next-page' href='" + "/index" + "-"+str(index+1) + ".html'>Next</a>"
+    return s
+
+def getTitle(md):
+    matches = title_regex.findall(md)
+    if matches:
+        return matches[0]
+    else:
+        return "No title"
+
 
 # Things that should happen in here:
 
@@ -75,12 +94,12 @@ for filename in compile_agenda:
         ctime = int(matches[0])
     else:
         ctime = int(time.time())
-    html = htmlFromFile(filename)
+    (html, md) = htmlFromFile(filename)
     # now apply template things: use loaded template and insert contents from generated html
     post_html = post_html_template
     post_html = post_html.replace("%content",html)
     post_html = post_html.replace("%site_name",config["site_name"])
-    post_html = post_html.replace("%title",filename[:-3])
+    post_html = post_html.replace("%title",getTitle(md))
     post_html = post_html.replace("%mtime",str(int(time.time())))
     post_html = post_html.replace("%ctime",str(ctime))
     # then write to file
@@ -97,17 +116,20 @@ for f in glob.glob("index*.html"):
 # load index template, fill with contents
 index_html_template = open(index_template).read()
 
+number_of_pages = int(math.ceil(len(posts_and_ctimes)/config["pagination"]))
+
 for (index,chunk) in enumerate(chunks(posts_and_ctimes,config["pagination"])):
     html = index_html_template
     html = html.replace("%site_name", config["site_name"])
+    html = html.replace("%prevnext", makePrevNext(index,number_of_pages))
     loop_html_template = index_regex.findall(html)[0] # todo: make safe
     inner_html = ""
     for (post,c) in chunk:
-        content = htmlFromFile(post)
+        (content,md) = htmlFromFile(post)
         loop_html = loop_html_template
-        loop_html = loop_html.replace("%link","/" + post)
+        loop_html = loop_html.replace("%link","/" + post[:-3] + ".html")
         loop_html = loop_html.replace("%content", content)
-        loop_html = loop_html.replace("%title", "some title")
+        loop_html = loop_html.replace("%title", getTitle(md))
         inner_html += loop_html
     html = index_regex.sub(inner_html, html)
     print("Index",index)
