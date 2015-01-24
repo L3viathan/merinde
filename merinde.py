@@ -8,6 +8,7 @@ import glob
 import sys
 import os
 import re
+import time
 
 from config import config
 
@@ -55,19 +56,29 @@ post_html_template = open(post_template).read()
 
 # 2. Read them in and compile to HTML. Insert into template and do replacements.
 for filename in compile_agenda:
+    if os.path.isfile(filename[:-3] + ".html"):
+        old_html = open(filename[:-3] + ".html").read()
+        matches = ctime_regex.findall(old_html)
+        if len(matches) != 1:
+            raise RuntimeError("Unexpected number of ctimes")
+        ctime = int(matches[0])
+    else:
+        ctime = int(time.time())
     html = htmlFromFile(filename)
     # now apply template things: use loaded template and insert contents from generated html
     post_html = post_html_template
     post_html = post_html.replace("%content",html)
     post_html = post_html.replace("%site_name",config["site_name"])
-    post_html = post_html.replace("%title",filenamej[:-3])
+    post_html = post_html.replace("%title",filename[:-3])
+    post_html = post_html.replace("%mtime",str(int(time.time())))
+    post_html = post_html.replace("%ctime",str(ctime))
     # then write to file
     open(filename[:-3] + ".html","w").write(post_html) #TODO tidy up
 
 # 3. Recompile index files. Get order by creation time of md files
 # get all posts, in order
 posts = list(glob.glob("posts/*.md"))
-posts_and_ctimes = sorted([(post,getCtime(post)) for post in posts], key = lambda x: x[1], reversed=True)
+posts_and_ctimes = sorted([(post,getCtime(post)) for post in posts], key = lambda x: x[1], reverse=True)
 
 # remove index file(s)
 
