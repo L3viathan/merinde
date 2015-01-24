@@ -2,6 +2,12 @@
 
 '''
 Python CMS compiling from Markdown to static HTML
+
+Usage:
+    merinde.py [-f]
+
+Options:
+    -f      forces recompile
 '''
 import markdown
 import glob
@@ -11,7 +17,10 @@ import re
 import time
 import math
 
+from docopt import docopt
 from config import config
+
+args = docopt(__doc__,version="0.1")
 
 post_template = "templates/" + config["template"] + "/post.html"
 index_template = "templates/" + config["template"] + "/index.html"
@@ -20,6 +29,8 @@ mtime_regex = re.compile("<meta name=\"mtime\" content=\"(\d+)\">")
 ctime_regex = re.compile("<meta name=\"ctime\" content=\"(\d+)\">")
 index_regex = re.compile("%begin(.*)%end", re.MULTILINE + re.DOTALL)
 title_regex = re.compile("^# ?(.*)$", re.MULTILINE)
+star_regex = re.compile("%stars (\w+) (\d)$", re.MULTILINE)
+sqimg_regex = re.compile("%sqimg (.*)$", re.MULTILINE)
 
 def htmlFromFile(filename):
     '''Reads file and converts markdown to HTML'''
@@ -60,6 +71,12 @@ def getTitle(md):
     else:
         return "No title"
 
+def makeStars(matchObject):
+    num = int(matchObject.group(2))
+    return "<div class='rating'><span class='rating-label'>" + matchObject.group(1) + "</span><span class='rating-stars'><span class='rating-stars-full'>" + ("★" * num)  + "</span><span class='rating-stars-empty'>"+ ("☆" * (7-num)) + "</span></span></div>"
+
+def makeSqimg(matchObject):
+    return "<img class='sqimg' src='../images/" + matchObject.group(1) + "' /><br>"
 
 # Things that should happen in here:
 
@@ -68,7 +85,7 @@ compile_agenda = []
 for filename in glob.glob("posts/*.md"):
     # read last changed time and compare to some time saved somewhere else (?)
     # if changed (or new), add to compile_agenda
-    if not os.path.isfile(filename[:-3] + ".html"): #we have never compiled it
+    if args["-f"] or not os.path.isfile(filename[:-3] + ".html"): #we have never compiled it
         compile_agenda.append(filename)
         continue
     mtime = os.path.getmtime(filename)
@@ -80,7 +97,7 @@ for filename in glob.glob("posts/*.md"):
 
 if not compile_agenda: #empty agenda, nothing to do
     print("Nothing to do, exiting")
-    # sys.exit(0)
+    sys.exit(0)
 
 post_html_template = open(post_template).read()
 
@@ -102,6 +119,10 @@ for filename in compile_agenda:
     post_html = post_html.replace("%title",getTitle(md))
     post_html = post_html.replace("%mtime",str(int(time.time())))
     post_html = post_html.replace("%ctime",str(ctime))
+
+    # more complicated replacements:
+    post_html = star_regex.sub(makeStars,post_html)
+    post_html = sqimg_regex.sub(makeSqimg,post_html)
     # then write to file
     open(filename[:-3] + ".html","w").write(post_html) #TODO tidy up
 

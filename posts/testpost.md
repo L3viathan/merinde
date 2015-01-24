@@ -1,5 +1,5 @@
-# Hello World
-
+# Pizzeria La Brace
+%sqimg testpost.jpg
 This is a *test* post. It is about the test subject.
 
 %name Hello World Restaurant

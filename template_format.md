@@ -10,7 +10,9 @@ Post-specific variables are also available in the loop in an index file.
 - %title: page title
 - %site_name: name of the site
 - %ctime, %mtime: time of creation and modification
+- %link: link to post
 
 ## Functions
 - %begin, %end: denote the "loop" in the index file
 - %star: inserts fancy star thing. Two parameters: name, amount
+- %prevnext: inserts links to previous and next page on index pages
