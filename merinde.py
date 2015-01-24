@@ -48,9 +48,9 @@ def chunks(l, n):
 def makePrevNext(index,num):
     s = ""
     if index != 0:
-        s += "<a class='previous-page' href='" + "/index" + ("" if index == 1 else "-"+str(index)) + ".html'>Previous</a>"
+        s += "<a class='previous-page' href='" + "index" + ("" if index == 1 else "-"+str(index-1)) + ".html'>Previous</a>"
     if index != num-1:
-        s += "<a class='next-page' href='" + "/index" + "-"+str(index+1) + ".html'>Next</a>"
+        s += "<a class='next-page' href='" + "index" + "-"+str(index+1) + ".html'>Next</a>"
     return s
 
 def getTitle(md):
@@ -127,7 +127,7 @@ for (index,chunk) in enumerate(chunks(posts_and_ctimes,config["pagination"])):
     for (post,c) in chunk:
         (content,md) = htmlFromFile(post)
         loop_html = loop_html_template
-        loop_html = loop_html.replace("%link","/" + post[:-3] + ".html")
+        loop_html = loop_html.replace("%link",post[:-3] + ".html")
         loop_html = loop_html.replace("%content", content)
         loop_html = loop_html.replace("%title", getTitle(md))
         inner_html += loop_html
