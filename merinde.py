@@ -91,7 +91,7 @@ for filename in compile_agenda:
     data = json.load(open(filename))
     data['ctime'] = data.get('ctime',int(time.time()))
     data['mtime'] = int(time.time())
-    json.dump(data,open(filename,"w"))
+    json.dump(data,open(filename,"w"), indent=4)
     # now apply template things: use loaded template and insert contents from generated html
     post_html = post_html_template
     post_html = post_html.replace("%description",data["description"])
