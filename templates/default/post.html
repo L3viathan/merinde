@@ -3,8 +3,6 @@
     <head>
         <meta charset="utf-8">
         <title>%title - %site_name</title>
-        <meta name="ctime" content="%ctime">
-        <meta name="mtime" content="%mtime">
         <link rel="stylesheet" href="../templates/default/default.css">
         <link href='http://fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700|Amatic+SC:400,700' rel='stylesheet' type='text/css'>
     </head>
@@ -14,7 +12,17 @@
                 <!-- <h2>%site_name</h2> -->
             </div>
             <div class="content">
-            %content
+                <h1>%title</h1>
+                <div class='location-label'>%loc</div>
+                <img class='sqimg' src='../images/%image' /><br>
+                %description
+
+                %stars
+
+                <a class='external-link' href='%website'>Website</a>
+
+                <br>
+                <img class='map' src='https://maps.googleapis.com/maps/api/staticmap?center=%latlon&zoom=15&size=300x150&markers=color:green|%latlon' /><br>
             </div>
         </div>
     </body>

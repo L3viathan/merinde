@@ -16,6 +16,9 @@ h1 {
     font-size: 36pt;
     margin-bottom: 0px;
 }
+.rating-stars {
+    line-height: 20px;
+}
 .rating-stars-full {
     color: orange;
 }
@@ -24,10 +27,8 @@ h1 {
     float: left;
 }
 
-.rating {
+.rating-table {
     margin: auto;
-    width: 200px;
-    text-align: right;
 }
 
 img.sqimg {
