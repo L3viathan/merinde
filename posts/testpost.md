@@ -1,14 +1,12 @@
 # Pizzeria La Brace
+%loc Rovereto, Italy
 %sqimg testpost.jpg
-This is a *test* post. It is about the test subject.
+Tasty food, a little bit too much, apparently also a Jazz club at times.
 
-%name Hello World Restaurant
-%city Atlantis
-%stars food 6
-%stars ambiente 5
-%stars service 4
-%map somecode
-%website foobar
+%stars food 4
+%stars ambiente 4
+%stars service 5
+%website http://labrace.net
+<br>
 
-
-WOWOWOWOWOOWOW
+%map 45.864034,11.028058

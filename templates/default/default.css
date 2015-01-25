@@ -1,23 +1,23 @@
 body {
     font-family: 'PT Sans Narrow', Verdana, sans-serif;
-    background-color: #e9f3f8;
-    color: #040d13;
+    background-color: #eff5df;
+    color: #121601;
     text-align: center;
 }
 
 #wrapper {
     margin: auto;
-    min-width: 320px;
-    max-width: 920px;
+    min-width: 300px;
+    max-width: 300px;
 }
 
 h1 {
     font-family: 'Amatic SC', cursive;
     font-size: 36pt;
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 .rating-stars-full {
-    color: gold;
+    color: orange;
 }
 .rating-label {
     width: 80px;
@@ -33,4 +33,14 @@ h1 {
 img.sqimg {
     width: 300px;
     margin-bottom: 10px;
+}
+
+.location-label {
+    font-size: x-large;
+    font-family: 'Amatic SC', cursive;
+}
+
+.external-link {
+    text-decoration: none;
+    color: #2889be;
 }

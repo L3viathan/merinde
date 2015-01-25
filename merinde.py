@@ -31,12 +31,15 @@ index_regex = re.compile("%begin(.*)%end", re.MULTILINE + re.DOTALL)
 title_regex = re.compile("^# ?(.*)$", re.MULTILINE)
 star_regex = re.compile("%stars (\w+) (\d)$", re.MULTILINE)
 sqimg_regex = re.compile("%sqimg (.*)$", re.MULTILINE)
+map_regex = re.compile("%map (.*)$", re.MULTILINE)
+loc_regex = re.compile("%loc (.*)$", re.MULTILINE)
+website_regex = re.compile("%website (.*)$", re.MULTILINE)
 
 def htmlFromFile(filename):
     '''Reads file and converts markdown to HTML'''
     file_handle = open(filename)
     md = file_handle.read()
-    return (markdown.markdown(md),md) #, output_format = config["output_format"])
+    return (markdown.markdown(md).replace("<p>","").replace("</p>",""),md) #, output_format = config["output_format"])
 
 def getCtime(filename):
     filename = filename.replace(".md", ".html")
@@ -73,10 +76,19 @@ def getTitle(md):
 
 def makeStars(matchObject):
     num = int(matchObject.group(2))
-    return "<div class='rating'><span class='rating-label'>" + matchObject.group(1) + "</span><span class='rating-stars'><span class='rating-stars-full'>" + ("★" * num)  + "</span><span class='rating-stars-empty'>"+ ("☆" * (7-num)) + "</span></span></div>"
+    return "<div class='rating'><span class='rating-label'>" + matchObject.group(1) + "</span><span class='rating-stars'><span class='rating-stars-full'>" + ("★" * num)  + "</span><span class='rating-stars-empty'>"+ ("☆" * (5-num)) + "</span></span></div>"
 
 def makeSqimg(matchObject):
     return "<img class='sqimg' src='../images/" + matchObject.group(1) + "' /><br>"
+
+def makeMap(matchObject):
+    return "<img class='map' src='https://maps.googleapis.com/maps/api/staticmap?center=" + matchObject.group(1) + "&zoom=15&size=300x150&markers=color:green|" + matchObject.group(1) + "' /><br>"
+
+def makeLoc(matchObject):
+    return "<div class='location-label'>" + matchObject.group(1) + "</div>"
+
+def makeWebsite(matchObject):
+    return "<a class='external-link' href='" + matchObject.group(1) + "'>Website</a>"
 
 # Things that should happen in here:
 
@@ -123,6 +135,9 @@ for filename in compile_agenda:
     # more complicated replacements:
     post_html = star_regex.sub(makeStars,post_html)
     post_html = sqimg_regex.sub(makeSqimg,post_html)
+    post_html = map_regex.sub(makeMap,post_html)
+    post_html = loc_regex.sub(makeLoc,post_html)
+    post_html = website_regex.sub(makeWebsite,post_html)
     # then write to file
     open(filename[:-3] + ".html","w").write(post_html) #TODO tidy up
 
