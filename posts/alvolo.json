@@ -1,0 +1,16 @@
+{
+    "title": "Pizza Al Volo",
+    "ctime": 1422280788,
+    "stars": {
+        "service": 2,
+        "food": 2,
+        "ambiente": 2
+    },
+    "mtime": 1422281403,
+    "description": "Too much of everything. A bit dry, but that could be because of our poor choice of pizza.",
+    "location": {
+        "latlon": "45.889,11.044",
+        "name": "Rovereto, Italy"
+    },
+    "image": "alvolo.jpg"
+}

@@ -13,7 +13,6 @@ a:link, a:visited, a:active, a:hover {
 #wrapper {
     margin: auto;
     min-width: 300px;
-    max-width: 300px;
 }
 
 h1 {
@@ -69,4 +68,12 @@ a.external-link {
 /* hide empty links */
 a[href=""] {
       display: none;
+}
+
+.content {
+    width: 300px;
+    margin: auto;
+    padding: 25px;
+    display: inline-block;
+    vertical-align: top;
 }
