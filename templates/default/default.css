@@ -18,7 +18,11 @@ a:link, a:visited, a:active, a:hover {
 h1 {
     font-family: 'Amatic SC', cursive;
     font-size: 36pt;
-    margin-bottom: 0px;
+    margin-bottom: 5px;
+    padding-bottom: 0px;
+}
+h1 a {
+    padding-bottom: 0px;
 }
 .rating-stars {
     line-height: 20px;
@@ -57,12 +61,15 @@ img.map {
 a.external-link {
     text-decoration: none;
     color: orange;
-    transition: all 0.3s;
+}
+a {
+    /* transition: border-color 0.3s; */
     padding: 5px;
 }
 
-.external-link:hover {
-    background: white;
+a:hover {
+    border-bottom: 2px solid orange;
+    /* background: white; */
 }
 
 /* hide empty links */
@@ -74,6 +81,36 @@ a[href=""] {
     width: 300px;
     margin: auto;
     padding: 25px;
+    padding-top: 0px;
     display: inline-block;
     vertical-align: top;
+}
+
+.index .description {
+    height: 50px;
+    display: block;
+    overflow: scroll;
+}
+
+#prevnext a {
+    color: orange;
+}
+
+.previous-page, .next-page {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.previous-page:before {
+    content: "« ";
+}
+.next-page:after {
+    content: " »";
+}
+
+#banner h2 {
+    color: orange;
+}
+#banner a:hover {
+    border-bottom: 3px solid orange;
 }

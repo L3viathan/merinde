@@ -9,14 +9,14 @@
     <body>
         <div id="wrapper">
             <div id="banner">
-                <!-- <h2>%site_name</h2> -->
+                <h2><a href="index.html"><img src="logo.png">%site_name.</a></h2>
             </div>
             %begin
-            <div class="content">
+            <div class="content index">
                 <h1><a href="%link">%title</a></h1>
                 <div class='location-label'>%loc</div>
                 <img class='sqimg' src='images/%image' /><br>
-                %description
+                <span class='description'>%description</span>
 
                 %stars
 
@@ -28,7 +28,7 @@
             </div>
             %end
 
-            %prevnext
+            <div id="prevnext">%prevnext</div>
         </div>
     </body>
 </html>
