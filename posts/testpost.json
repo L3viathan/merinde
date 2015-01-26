@@ -1,17 +1,17 @@
 {
-    "image": "testpost.jpg",
-    "title": "Pizzeria La Brace",
-    "stars": {
-        "ambiente": 4,
-        "food": 4,
-        "service": 5
-    },
-    "description": "Tasty food, a little bit too much, apparently also a Jazz club at times.",
-    "mtime": 1422227199,
-    "website": "http://labrace.net",
+    "description": "Tasty food, a <em>little</em> bit too much, apparently also a Jazz club at times.",
     "location": {
-        "latlon": "45.864034,11.028058",
-        "name": "Rovereto, Italy"
+        "name": "Rovereto, Italy",
+        "latlon": "45.864034,11.028058"
     },
-    "ctime": 1422226614
+    "title": "Pizzeria La Brace",
+    "ctime": 1422226614,
+    "image": "testpost.jpg",
+    "website": "http://labrace.net",
+    "mtime": 1422235572,
+    "stars": {
+        "food": 4,
+        "ambiente": 4,
+        "service": 5
+    }
 }

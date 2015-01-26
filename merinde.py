@@ -103,7 +103,7 @@ for filename in compile_agenda:
     post_html = post_html.replace("%image",data["image"])
     post_html = post_html.replace("%latlon",data["location"]["latlon"])
     post_html = post_html.replace("%loc",data["location"]["name"])
-    post_html = post_html.replace("%website",data["website"])
+    post_html = post_html.replace("%website",data.get("website", ""))
     # then write to file
     open(filename[:-5] + ".html","w").write(post_html) #TODO tidy up
 

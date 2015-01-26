@@ -29,6 +29,8 @@ h1 {
 
 .rating-table {
     margin: auto;
+    margin-top: 15px;
+    margin-bottom: 15px;
 }
 
 img.sqimg {
@@ -36,12 +38,24 @@ img.sqimg {
     margin-bottom: 10px;
 }
 
+img.map {
+    margin-top: 15px;
+}
+
 .location-label {
     font-size: x-large;
     font-family: 'Amatic SC', cursive;
+    margin-top: -5px;
+    margin-bottom: 20px;
 }
 
 .external-link {
     text-decoration: none;
-    color: #2889be;
+    color: orange;
+    transition: all 0.3s;
+    padding: 5px;
+}
+
+.external-link:hover {
+    background: white;
 }
