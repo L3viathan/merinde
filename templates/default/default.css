@@ -72,6 +72,10 @@ a:hover {
     /* background: white; */
 }
 
+a.map-link:hover {
+    border: none;
+}
+
 /* hide empty links */
 a[href=""] {
       display: none;
