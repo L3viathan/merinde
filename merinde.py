@@ -128,12 +128,19 @@ for (index,chunk) in enumerate(chunks(posts_and_ctimes,config["pagination"])):
     inner_html = ""
     for (post,c) in chunk:
         data = json.load(open(post))
-        loop_html = loop_html_template
-        loop_html = loop_html.replace("%link",post[:-5] + ".html")
-        loop_html = loop_html.replace("%description", data["description"])
-        loop_html = loop_html.replace("%title", data["title"])
-        loop_html = loop_html.replace("%loc", data["location"]["name"])
-        inner_html += loop_html
+        post_html = loop_html_template
+        post_html = post_html.replace("%description",data["description"])
+        post_html = post_html.replace("%site_name",config["site_name"])
+        post_html = post_html.replace("%title",data["title"])
+        post_html = post_html.replace("%link",post[:-5] + ".html")
+
+        # more complicated replacements:
+        post_html = post_html.replace("%stars",makeStars(data["stars"]))
+        post_html = post_html.replace("%image",data["image"])
+        post_html = post_html.replace("%latlon",data["location"]["latlon"])
+        post_html = post_html.replace("%loc",data["location"]["name"])
+        post_html = post_html.replace("%website",data.get("website", ""))
+        inner_html += post_html
     html = index_regex.sub(inner_html, html)
     print("Index",index)
     i = "" if index == 0 else "-" + str(index)

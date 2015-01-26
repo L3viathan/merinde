@@ -5,6 +5,11 @@ body {
     text-align: center;
 }
 
+a:link, a:visited, a:active, a:hover {
+    text-decoration: none;
+    color: #121601;
+}
+
 #wrapper {
     margin: auto;
     min-width: 300px;
@@ -18,6 +23,7 @@ h1 {
 }
 .rating-stars {
     line-height: 20px;
+    text-align: left;
 }
 .rating-stars-full {
     color: orange;
@@ -49,7 +55,7 @@ img.map {
     margin-bottom: 20px;
 }
 
-.external-link {
+a.external-link {
     text-decoration: none;
     color: orange;
     transition: all 0.3s;
@@ -58,4 +64,9 @@ img.map {
 
 .external-link:hover {
     background: white;
+}
+
+/* hide empty links */
+a[href=""] {
+      display: none;
 }
