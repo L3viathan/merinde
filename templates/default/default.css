@@ -93,7 +93,7 @@ a[href=""] {
 .index .description {
     height: 50px;
     display: block;
-    overflow: scroll;
+    overflow: hidden;
 }
 
 #prevnext a {
